@@ -1,23 +1,24 @@
-name: Flutter Build
+name: Flutter CI
 
 on:
   push:
     branches:
       - main
+  pull_request:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Setup Flutter
+      - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'stable'
+          flutter-version: '3.19.6'   # ✅ یہاں واضح ورژن لکھیں
+          channel: 'stable'
 
       - name: Install dependencies
         run: flutter pub get
@@ -25,7 +26,7 @@ jobs:
       - name: Build APK
         run: flutter build apk --release
 
-      - name: Build AppBundle (AAB)
+      - name: Build AppBundle
         run: flutter build appbundle --release
 
       - name: Upload APK Artifact
